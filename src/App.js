@@ -7,10 +7,11 @@ import Results from './components/Results';
 function App() {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const [disabled, setDisabled] = useState(true)
+
     const [results, setResults] = useState([])
     const [nextPageResults, setNextPageResults] = useState([])
-    const [prevResult, setPrevResult] = useState([])
-    const [nextPageToken, setNextPageToken] = useState("")
+    const [nextPageToken, setNextPageToken] = useState()
 
     const getInitialResults = async () => {
         const results = await fetchFirstPage()
@@ -28,12 +29,21 @@ function App() {
     const getNextPage = async (token) => {
         const nextResults = await fetchXPage(token)
 
-        if (nextResults.status = 200) {
+        if (nextResults.status === 200) {
             setNextPageResults(nextResults.data.pokemon)
-            setNextPageToken(nextResults.data.nextPage)
+            if (nextResults.data.nextPage) {
+              setNextPageToken(nextResults.data.nextPage)
+            } else {
+              setNextPageToken(null)
+            }
         } else {
             setError(`Error fetching next page, token ${token}`)
         }
+    }
+
+    const handleNextPageClick = () => {
+      setResults(nextPageResults)
+      getNextPage(nextPageToken)
     }
 
     useEffect(() => {
@@ -47,16 +57,16 @@ function App() {
       }
     }, [])
 
-    const handleNextPageClick = () => {
-      setPrevResult(results)
-      setResults(nextPageResults)
-      getNextPage(nextPageToken)
-    }
+    useEffect(() => {
+      if (nextPageToken && nextPageToken.length > 0) {
+        setDisabled(false)
+      }
+    }, [nextPageToken])
 
     return (
         <main className="App">
-            <TextField />
-            <button onClick={handleNextPageClick}>Next Page</button>
+            <TextField setLoading={setLoading} setResults={setResults} />
+            <button onClick={handleNextPageClick} disabled={disabled}>Next Page</button>
             <Results loading={loading} results={results} error={error} />
         </main>
     );
