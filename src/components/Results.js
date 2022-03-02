@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Results({ results }) {
+export default function Results({ loading, results, error }) {
 
     const displayedResults = results.map((result) => {
         return (<li id={result.id} key={result.id}>
@@ -11,9 +11,15 @@ export default function Results({ results }) {
 
     return (
         <section>
-            <ul>
-                { displayedResults }
-            </ul>
+            { loading ? 
+                <p>Fetching results...</p> 
+            : error ? 
+                <p style={{ color: "red" }}>{error}</p>
+            : (
+                <ul>
+                    { displayedResults }
+                </ul>
+            )}
         </section>
     )
 }
