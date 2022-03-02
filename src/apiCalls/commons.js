@@ -9,7 +9,7 @@ export const fetchFirstPage = () => {
 }
 
 export const fetchXPage = (token) => {
-    return axios.get(`${URL}/api/pokemon?=${token}`)
+    return axios.get(`${URL}/api/pokemon?page=${token}`)
     .then((res) => res)
     .catch((err) => console.error(err))
 }
