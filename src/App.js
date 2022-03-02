@@ -10,6 +10,7 @@ function App() {
     const [loading, setLoading] = useState(false)
     const [results, setResults] = useState([])
     const [nextPageResults, setNextPageResults] = useState([])
+    const [prevResult, setPrevResult] = useState([])
     const [nextPageToken, setNextPageToken] = useState("")
 
     const getInitialResults = async () => {
@@ -46,9 +47,16 @@ function App() {
       }
     }, [])
 
+    const handleNextPageClick = () => {
+      setPrevResult(results)
+      setResults(nextPageResults)
+      getNextPage(nextPageToken)
+    }
+
     return (
         <main className="App">
             <TextField />
+            <button onClick={handleNextPageClick}>Next Page</button>
             <Results loading={loading} results={results} error={error} />
         </main>
     );
