@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import TextField from './components/TextField';
-// import axios from "axios";
 import { fetchFirstPage, fetchXPage } from './apiCalls/commons';
 import Results from './components/Results';
 
@@ -19,6 +18,7 @@ function App() {
 
         if (results.status === 200) {
             setResults(results.data.pokemon)
+            // immediately fetch next page
             getNextPage(results.data.nextPage)
         } else {
             setError("Error fetching initial results")
