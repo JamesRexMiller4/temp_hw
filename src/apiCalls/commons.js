@@ -13,3 +13,9 @@ export const fetchXPage = (token) => {
     .then((res) => res)
     .catch((err) => console.error(err))
 }
+
+export const fetchQuery = (query) => {
+    return axios.get(`${URL}/api/pokemon/search/${query}`)
+    .then((res) => res)
+    .catch((err) => err)
+}
